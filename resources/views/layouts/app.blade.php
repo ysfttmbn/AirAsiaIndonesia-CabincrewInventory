@@ -77,5 +77,6 @@
         <script src="{{ asset('assets/js/custom/apps/ecommerce/catalog/save-product.js') }}"></script>
         <script src="{{ asset('assets/js/custom/apps/ecommerce/sales/save-order.js') }}"></script>
         <script src="{{ asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
+        <script src="{{ asset('assets/js/custom/utilities/modals/create-api-key.js') }}"></script>
     </body>
 </html>

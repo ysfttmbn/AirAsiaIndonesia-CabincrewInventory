@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 
@@ -19,9 +20,7 @@ Route::get('/', function () {
     return view('pages.auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('pages.home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/requestdetails', function () {
     return view('pages.requestdetails');
 })->middleware(['auth', 'verified'])->name('requestdetails');

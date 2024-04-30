@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
+use Illuminate\Routing\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Routing\Controller;
 
 class ProductController extends Controller
 {
@@ -15,6 +16,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+        $products = Product::orderBy('updated_at', 'desc')->get();
         return view('pages.inventory', compact('products'));
     }
 
@@ -33,8 +35,11 @@ class ProductController extends Controller
     {
         // dd($request->all());
         $validated = $request->validated();
+        $productId = Str::random(6);
 
+    
     $product = new Product();
+    $product->id = $this->generateProductId();
     $product->product_name = $request->product_name;
     $product->size = $request->size;
     $product->quantity = $request->quantity;
@@ -49,6 +54,14 @@ class ProductController extends Controller
     $product->save();
 
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
+    }
+
+    private function generateProductId()
+    {
+        $randomLetters = Str::random(4); // Generate 4 random capital letters
+        $randomNumbers = rand(10, 99); // Generate 2 random numbers between 10 and 99
+        $productId = strtoupper($randomLetters) . $randomNumbers; // Combine letters and numbers
+        return $productId;
     }
 
     /**
@@ -73,7 +86,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
     $validated = $request->validated();
-
+    
     $product->product_name = $request->product_name;
     $product->size = $request->size;
     $product->quantity = $request->quantity;

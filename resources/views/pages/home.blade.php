@@ -108,178 +108,69 @@
                             <div class="col-xl-8">
                                 <div class="card card-flush h-xl-100">
                                     <div class="card-header pt-7">
-                                        <h3 class="card-title align-items-start flex-column">
-                                            <span class="card-label fw-bold text-gray-900">Inventory Items</span>
-                                        </h3>
+                                        <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+                                            <i class="ki-outline ki-magnifier fs-3 position-absolute ms-4"></i>
+                                            <input type="text" data-kt-ecommerce-edit-order-filter="search" class="form-control form-control-solid w-200 w-lg-200 ps-12" placeholder="Search Items" />
+                                        </div>
                                         <div class="card-toolbar">
                                             <div class="d-flex flex-stack flex-wrap gap-4">
-                                                @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                <div class="d-flex align-items-center fw-bold">
-                                                    <div class="text-muted fs-7 me-2">Category</div>
-                                                    <select class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="Select an option">
-                                                        <option></option>
-                                                        <option value="Show All" selected="selected">Show All</option>
-                                                        <option value="male">Male</option>
-                                                        <option value="famale">Famale</option>
-                                                    </select>
-                                                </div>
-                                                <div class="d-flex align-items-center fw-bold">
-                                                    <div class="text-muted fs-7 me-2">Status</div>
-                                                    <select class="form-select form-select-transparent text-gray-900 fs-7 lh-1 fw-bold py-0 ps-3 w-auto" data-control="select2" data-hide-search="true" data-dropdown-css-class="w-150px" data-placeholder="Select an option" data-kt-table-widget-5="filter_status">
-                                                        <option></option>
-                                                        <option value="Show All" selected="selected">Show All</option>
-                                                        <option value="In Stock">In Stock</option>
-                                                        <option value="Out of Stock">Out of Stock</option>
-                                                        <option value="Low Stock">Low Stock</option>
-                                                    </select>
-                                                </div>
-                                                @endif
                                                 @foreach(Auth::user()->getRoleNames() as $role)
                                                         @if($role == 'cabincrew')
-                                                        <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Items</a>
+                                                        <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Item</a>
                                                         @elseif($role == 'admin' || $role == 'management')
-                                                        <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Add Itemsy</a>
+                                                        <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Add Item</a>
                                                         @endif
                                                     @endforeach
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        @foreach(Auth::user()->getRoleNames() as $role)
+                                            @foreach(Auth::user()->getRoleNames() as $role)
                                             @if($role == 'cabincrew')
-                                            <table class="table align-middle table-row-dashed fs-6 gy-3" id="kt_table_widget_4_table">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_edit_order_product_table">
                                             @elseif($role == 'admin' || $role == 'management')
-                                            <table class="table align-middle table-row-dashed fs-6 gy-3" id="kt_table_widget_6_table">
+                                            <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_ecommerce_edit_order_product_table">
                                             @endif
-                                        @endforeach
                                             <thead>
                                                 <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                                     <th class="min-w-100px">Item</th>
-                                                    <th class="text-end pe-3 min-w-100px">ID Product</th>
-                                                    <th class="text-end pe-3 min-w-100px">Category</th>
-                                                    <th class="text-end pe-3 min-w-100px">Size</th>
-                                                    <th class="text-end pe-3 min-w-100px">Status</th>
+                                                    <th class="min-w-100px text-end pe-5">ID Product</th>
+                                                    <th class="min-w-100px text-end pe-5">Category</th>
+                                                    <th class="min-w-100px text-end pe-5">Size</th>
+                                                    <th class="min-w-100px text-end pe-5">Status</th>
                                                     @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <th class="text-end pe-3 min-w-100px">QTY</th>
+                                                    <th class="min-w-100px text-end pe-5">QTY</th>
                                                     @endif
                                                     
                                                 </tr>
                                             </thead>
-                                            <tbody class="fw-bold text-gray-600">
+                                            <tbody class="fw-semibold text-gray-600">
+                                                @foreach($products as $product)
                                                 <tr>
                                                     <td>
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-900 text-hover-primary">Macbook Air M1</a>
+                                                        <a class="text-gray-900 fw-bold">{{ $product->product_name }}</a>
                                                     </td>
-                                                    <td class="text-end">#XGY-356</td>
-                                                    <td class="text-end">02 Apr, 2024</td>
-                                                    <td class="text-end">XL</td>
+                                                    <td class="text-end">{{ $product->id}}</td>
+                                                    <td class="text-end">{{ $product->category }}</td>
+                                                    <td class="text-end">{{ $product->size }}</td>
                                                     <td class="text-end">
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-primary">In Stock</span>
+                                                        
+                                                        @if ($product->quantity == 0)
+                                                            <span class="badge py-3 px-4 fs-7 badge-light-danger">Out of Stock</span>
+                                                        @elseif ($product->quantity <= 6)
+                                                            <span class="badge py-3 px-4 fs-7 badge-light-warning">Low Stock</span>
+                                                        @else
+                                                            <span class="badge py-3 px-4 fs-7 badge-light-primary">In Stock</span>
+                                                        @endif
                                                     </td>
                                                     @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <td class="text-end" data-order="58">
-                                                        <span class="text-gray-900 fw-bold">58 PCS</span>
-                                                    </td>
+                                                    <td class="text-end pe-5">{{ $product->quantity }}</td>
                                                     @endif
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-900 text-hover-primary">Surface Laptop 4</a>
-                                                    </td>
-                                                    <td class="text-end">#YHD-047</td>
-                                                    <td class="text-end">01 Apr, 2024</td>
-                                                    <td class="text-end">XL</td>
-                                                    <td class="text-end">
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-danger">Out of Stock</span>
-                                                    </td>
-                                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <td class="text-end" data-order="0">
-                                                        <span class="text-gray-900 fw-bold">0 PCS</span>
-                                                    </td>
-                                                    @endif
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-900 text-hover-primary">Logitech MX 250</a>
-                                                    </td>
-                                                    <td class="text-end">#SRR-678</td>
-                                                    <td class="text-end">24 Mar, 2024</td>
-                                                    <td class="text-end">XL</td>
-                                                    <td class="text-end">
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-primary">In Stock</span>
-                                                    </td>
-                                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <td class="text-end" data-order="290">
-                                                        <span class="text-gray-900 fw-bold">290 PCS</span>
-                                                    </td>
-                                                    @endif
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-900 text-hover-primary">AudioEngine HD3</a>
-                                                    </td>
-                                                    <td class="text-end">#PXF-578</td>
-                                                    <td class="text-end">24 Mar, 2024</td>
-                                                    <td class="text-end">XL</td>
-                                                    <td class="text-end">
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-danger">Out of Stock</span>
-                                                    </td>
-                                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <td class="text-end" data-order="46">
-                                                        <span class="text-gray-900 fw-bold">46 PCS</span>
-                                                    </td>
-                                                    @endif
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-900 text-hover-primary">HP Hyper LTR</a>
-                                                    </td>
-                                                    <td class="text-end">#PXF-778</td>
-                                                    <td class="text-end">16 Jan, 2024</td>
-                                                    <td class="text-end">XL</td>
-                                                    <td class="text-end">
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-primary">In Stock</span>
-                                                    </td>
-                                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <td class="text-end" data-order="78">
-                                                        <span class="text-gray-900 fw-bold">78 PCS</span>
-                                                    </td>
-                                                    @endif
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-900 text-hover-primary">Dell 32 UltraSharp</a>
-                                                    </td>
-                                                    <td class="text-end">#XGY-356</td>
-                                                    <td class="text-end">22 Dec, 2024</td>
-                                                    <td class="text-end">XL</td>
-                                                    <td class="text-end">
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-warning">Low Stock</span>
-                                                    </td>
-                                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <td class="text-end" data-order="8">
-                                                        <span class="text-gray-900 fw-bold">8 PCS</span>
-                                                    </td>
-                                                    @endif
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-900 text-hover-primary">Google Pixel 6 Pro</a>
-                                                    </td>
-                                                    <td class="text-end">#XVR-425</td>
-                                                    <td class="text-end">27 Dec, 2024</td>
-                                                    <td class="text-end">XL</td>
-                                                    <td class="text-end">
-                                                        <span class="badge py-3 px-4 fs-7 badge-light-primary">In Stock</span>
-                                                    </td>
-                                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <td class="text-end" data-order="124">
-                                                        <span class="text-gray-900 fw-bold">124 PCS</span>
-                                                    </td>
-                                                    @endif
-                                                </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
