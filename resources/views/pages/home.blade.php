@@ -23,84 +23,21 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="hover-scroll-overlay-y pe-6 me-n6" style="height: 415px">
+                                            @foreach ($requests as $request)
                                             <div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
                                                 <div class="d-flex flex-stack mb-3">
                                                     <div class="me-3">
-                                                        <img src="assets/media/stock/ecommerce/210.png" class="w-50px ms-n1 me-1" alt="" />
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">Elephant 1802</a>
+                                                        <img src="{{ asset('images/' . $request->product->image) }}" class="w-50px ms-n1 me-1" alt="" />
+                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">{{ $request->product->product_name }}</a>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex flex-stack">
                                                     <span class="text-gray-500 fw-bold">To: 
-                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">Jason Bourne</a></span>
-                                                    <span class="badge badge-light-success">Delivered</span>
+                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">{{ $request->user->name }}</a></span>
+                                                    <span class="badge badge-light-success">{{ $request->status }}</span>
                                                 </div>
                                             </div>
-                                            <div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
-                                                <div class="d-flex flex-stack mb-3">
-                                                    <div class="me-3">
-                                                        <img src="assets/media/stock/ecommerce/209.png" class="w-50px ms-n1 me-1" alt="" />
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">RiseUP</a>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-stack">
-                                                    <span class="text-gray-500 fw-bold">To: 
-                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">Marie Durant</a></span>
-                                                    <span class="badge badge-light-primary">Shipping</span>
-                                                </div>
-                                            </div>
-                                            <div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
-                                                <div class="d-flex flex-stack mb-3">
-                                                    <div class="me-3">
-                                                        <img src="assets/media/stock/ecommerce/214.png" class="w-50px ms-n1 me-1" alt="" />
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">Yellow Stone</a>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-stack">
-                                                    <span class="text-gray-500 fw-bold">To: 
-                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">Dan Wilson</a></span>
-                                                    <span class="badge badge-light-danger">Confirmed</span>
-                                                </div>
-                                            </div>
-                                            <div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
-                                                <div class="d-flex flex-stack mb-3">
-                                                    <div class="me-3">
-                                                        <img src="assets/media/stock/ecommerce/211.png" class="w-50px ms-n1 me-1" alt="" />
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">Elephant 1802</a>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-stack">
-                                                    <span class="text-gray-500 fw-bold">To: 
-                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">Lebron Wayde</a></span>
-                                                    <span class="badge badge-light-success">Delivered</span>
-                                                </div>
-                                            </div>
-                                            <div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
-                                                <div class="d-flex flex-stack mb-3">
-                                                    <div class="me-3">
-                                                        <img src="assets/media/stock/ecommerce/215.png" class="w-50px ms-n1 me-1" alt="" />
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">RiseUP</a>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-stack">
-                                                    <span class="text-gray-500 fw-bold">To: 
-                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">Ana Simmons</a></span>
-                                                    <span class="badge badge-light-primary">Shipping</span>
-                                                </div>
-                                            </div>
-                                            <div class="border border-dashed border-gray-300 rounded px-7 py-3">
-                                                <div class="d-flex flex-stack mb-3">
-                                                    <div class="me-3">
-                                                        <img src="assets/media/stock/ecommerce/192.png" class="w-50px ms-n1 me-1" alt="" />
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">Yellow Stone</a>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex flex-stack">
-                                                    <span class="text-gray-500 fw-bold">To: 
-                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">Kevin Leonard</a></span>
-                                                    <span class="badge badge-light-danger">Confirmed</span>
-                                                </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +55,7 @@
                                                         @if($role == 'cabincrew')
                                                         <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Item</a>
                                                         @elseif($role == 'admin' || $role == 'management')
-                                                        <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Add Item</a>
+                                                        <a href="{{ route('products.create') }}" class="btn btn-primary er fs-6 px-8 py-4">Add Item</a>
                                                         @endif
                                                     @endforeach
                                             </div>
@@ -133,13 +70,13 @@
                                             @endif
                                             <thead>
                                                 <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                                    <th class="min-w-100px">Item</th>
-                                                    <th class="min-w-100px text-end pe-5">ID Product</th>
-                                                    <th class="min-w-100px text-end pe-5">Category</th>
-                                                    <th class="min-w-100px text-end pe-5">Size</th>
-                                                    <th class="min-w-100px text-end pe-5">Status</th>
+                                                    <th class="min-w-100px">Items</th>
+                                                    <th class="min-w-100px text-end pe-0">ID Product</th>
+                                                    <th class="min-w-100px text-end pe-0">Category</th>
+                                                    <th class="min-w-100px text-end pe-2">Size</th>
+                                                    <th class="min-w-100px text-end pe-3">Status</th>
                                                     @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
-                                                    <th class="min-w-100px text-end pe-5">QTY</th>
+                                                    <th class="min-w-100px text-end pe-0">QTY</th>
                                                     @endif
                                                     
                                                 </tr>
@@ -148,7 +85,14 @@
                                                 @foreach($products as $product)
                                                 <tr>
                                                     <td>
-                                                        <a class="text-gray-900 fw-bold">{{ $product->product_name }}</a>
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="#" class="symbol symbol-50px">
+                                                                <span class="symbol-label" style="background-image:url({{ asset('images/' . $product->image) }});"></span>
+                                                            </a>
+                                                            <div class="ms-5">
+                                                                <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name">{{ $product->product_name }}</a>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                     <td class="text-end">{{ $product->id}}</td>
                                                     <td class="text-end">{{ $product->category }}</td>
@@ -210,9 +154,7 @@
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                             <th class="w-10px pe-2">
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                                    
-                                                </div>
+                                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3"></div>
                                             </th>
                                             <th class="min-w-100px">Request ID</th>
                                             <th class="min-w-175px">Cabin Crew</th>
@@ -222,61 +164,147 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
+                                        @foreach ($requests as $request)
                                         <tr>
                                             <td>
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    
-                                                
+                                                <div class="form-check form-check-sm form-check-custom form-check-solid"></div>
                                             </td>
                                             <td data-kt-ecommerce-order-filter="order_id">
-                                                <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">13852</a>
+                                                <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">{{ $request->id }}</a>
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                                                         <a href="apps/user-management/users/view.html">
                                                             <div class="symbol-label">
-                                                                <img src="assets/media/avatars/300-25.jpg" alt="Brian Cox" class="w-100" />
+                                                                <img src="{{ asset('storage/' . $request->user->profile_picture) }}" alt="User Profile" class="w-100" />
                                                             </div>
                                                         </a>
                                                     </div>
                                                     <div class="ms-5">
-                                                        <a href="apps/user-management/users/view.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Brian Cox</a>
+                                                        <a href="apps/user-management/users/view.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->user->name }}</a>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-end pe-0" data-order="Completed">
-                                                <div class="badge badge-light-success">Completed</div>
+                                                <div class="badge badge-light-success">{{ $request->status }}</div>
                                             </td>
                                             <td class="text-end" data-order="2024-01-11">
-                                                <span class="fw-bold">11/01/2024</span>
+                                                <span class="fw-bold">{{ $request->created_at }}</span>
                                             </td>
                                             <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 
-                                                <i class="ki-outline ki-down fs-5 ms-1"></i></a>
+                                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                    Actions <i class="ki-outline ki-down fs-5 ms-1"></i>
+                                                </a>
                                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                                        <div class="menu-item px-3">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_select_users" class="menu-link px-3">View</a>
-                                                        </div>
+                                                    <div class="menu-item px-3">
+                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_select_users_{{ $request->id }}" class="menu-link px-3">View</a>
+                                                    </div>
                                                     @foreach(Auth::user()->getRoleNames() as $role)
-                                                        @if($role == 'cabincrew')
-                                                        <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3">Accepted</a>
-                                                        </div>
-                                                        @elseif($role == 'admin' || $role == 'management')
-                                                        <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3">Confirm</a>
-                                                        </div>
-                                                        <div class="menu-item px-3">
-                                                            <a href="#" class="menu-link px-3" data-kt-ecommerce-order-filter="delete_row">Reject</a>
-                                                        </div>
-                                                        @endif
+                                                    @if($role == 'cabincrew')
+                                                    <div class="menu-item px-3">
+                                                        <a href="#" class="menu-link px-3">Accepted</a>
+                                                    </div>
+                                                    @elseif($role == 'admin' || $role == 'management')
+                                                    <div class="menu-item px-3">
+                                                        <a href="#" class="menu-link px-3">Confirm</a>
+                                                    </div>
+                                                    <div class="menu-item px-3">
+                                                        <a href="#" class="menu-link px-3" data-kt-ecommerce-order-filter="delete_row">Reject</a>
+                                                    </div>
+                                                    @endif
                                                     @endforeach
                                                 </div>
                                             </td>
                                         </tr>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="kt_modal_select_users_{{ $request->id }}" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog mw-700px">
+                                                <div class="modal-content">
+                                                    <div class="modal-header pb-0 border-0 d-flex justify-content-end">
+                                                        <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                                                            <i class="ki-outline ki-cross fs-1"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-body scroll-y mx-5 mx-xl-10 pt-0 pb-15">
+                                                        <div class="text-center mb-13">
+                                                            <h1 class="d-flex justify-content-center align-items-center mb-3">Order Details</h1>
+                                                        </div>
+                                                        <div class="mh-475px scroll-y me-n7 pe-7">
+                                                            <div class="border border-hover-primary p-7 rounded mb-7" style="overflow-y: auto; max-height: 330px;">
+                                                                <div class="d-flex flex-stack pb-3">
+                                                                    <div class="d-flex">
+                                                                        <div class="symbol symbol-circle symbol-45px">
+                                                                            <img src="{{ asset('storage/' . $request->user->profile_picture) }}" alt="User Profile" />
+                                                                        </div>
+                                                                        <div class="ms-5">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">{{ $request->user->name }}</a>
+                                                                                <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
+                                                                                    <i class="badge py-3 px-4 fs-7 badge-light-primary"></i>{{ $request->status }}</span>
+                                                                            </div>
+                                                                            @foreach($request->user->getRoleNames() as $role)
+                                                                            <span class="text-muted fw-semibold mb-3">{{ $role }}</span>
+                                                                            @endforeach
+                                                                        </div>
+                                                                    </div>
+                                                                    <div clas="d-flex">
+                                                                        <div class="text-end pb-3">
+                                                                            <span class="text-muted fs-7">ID REQUEST</span>
+                                                                            <span class="text-gray-900 fw-bold fs-5">{{ $request->id }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="p-0">
+                                                                    <div class="d-flex flex-column">
+                                                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
+                                                                            <!--begin::Thumbnail-->
+                                                                            <a href="apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
+                                                                                <span class="symbol-label" style="background-image:url({{ asset('images/' . $request->product->image) }});"></span>
+                                                                            </a>
+                                                                            <!--end::Thumbnail-->
+                                                                            <div class="ms-5">
+                                                                                <!--begin::Title-->
+                                                                                <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->product->product_name }}</a>
+                                                                                <!--end::Title-->
+                                                                                <!--begin::SKU-->
+                                                                                <div class="text-muted fs-7">{{ $request->product->id }}</div>
+                                                                                <!--end::SKU-->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="d-flex flex-column">
+                                                                        <div class="separator separator-dashed border-muted my-5"></div>
+                                                                        <div class="d-flex flex-stack">
+                                                                            <div class="d-flex flex-column mw-200px">
+                                                                                <div class="d-flex align-items-center mb-2">
+                                                                                    <span class="text-muted fs-8">Date Request</span>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-center mb-2">
+                                                                                    <span class="text-gray-900 fw-bold fs-5">{{ $request->created_at }}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex flex-column mw-200px">
+                                                                                <div class="d-flex align-items-center mb-2">
+                                                                                    <span class="text-muted fs-8">Quantity</span>
+                                                                                </div>
+                                                                                <div class="d-flex align-items-center mb-2">
+                                                                                    <span class="text-gray-900 fw-bold fs-5">{{ $request->quantity}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Modal -->
+                                        @endforeach
                                     </tbody>
-                                </table>
+                                </table>                                
                             </div>
                         </div>
                     </div>
@@ -292,7 +320,8 @@
                             </div>
                         </div>
                         <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
-                            <form id="kt_modal_bidding_form" class="form" action="#">
+                            <form id="kt_modal_bidding_form" class="form" action="{{ route('products.requestInventory') }}" method="POST">
+                                @csrf
                                 <div class="mb-13 text-center">
                                     <h1 class="mb-3">Place your Request</h1>
                                     <div class="text-muted fw-semibold fs-5">If you need more info, please conctact
@@ -303,21 +332,11 @@
                                         <span class="required">Requested items</span>
                                     </label>
                                     <div class="" data-kt-modal-bidding-type="dollar">
-                                        <select name="currency_dollar" aria-label="Select a Currency" data-placeholder="Select a currency.." class="form-select form-select-solid form-select-lg">
-                                            <option data-kt-bidding-modal-option-icon="flags/united-states.svg" value="USD" selected="selected">
-                                            <b>USD</b>&nbsp;-&nbsp;USA dollar</option>
-                                            <option data-kt-bidding-modal-option-icon="flags/united-kingdom.svg" value="GBP">
-                                            <b>GBP</b>&nbsp;-&nbsp;British pound</option>
-                                            <option data-kt-bidding-modal-option-icon="flags/australia.svg" value="AUD">
-                                            <b>AUD</b>&nbsp;-&nbsp;Australian dollar</option>
-                                            <option data-kt-bidding-modal-option-icon="flags/japan.svg" value="JPY">
-                                            <b>JPY</b>&nbsp;-&nbsp;Japanese yen</option>
-                                            <option data-kt-bidding-modal-option-icon="flags/sweden.svg" value="SEK">
-                                            <b>SEK</b>&nbsp;-&nbsp;Swedish krona</option>
-                                            <option data-kt-bidding-modal-option-icon="flags/canada.svg" value="CAD">
-                                            <b>CAD</b>&nbsp;-&nbsp;Canadian dollar</option>
-                                            <option data-kt-bidding-modal-option-icon="flags/switzerland.svg" value="CHF">
-                                            <b>CHF</b>&nbsp;-&nbsp;Swiss franc</option>
+                                        <select name="product_id" aria-label="Select a Currency" data-placeholder="Select a currency.." class="form-select form-select-solid form-select-lg">
+                                            @foreach($products as $product)
+                                            <option value="{{ $product->id}}" selected="selected">
+                                            <b>{{ $product->id}}</b>&nbsp;-&nbsp;{{ $product->product_name}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -326,53 +345,12 @@
                                         <span class="required">Quantity</span>
                                         </span>
                                     </label>
-                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Quantity" name="bid_amount" />
+                                    <input type="number" class="form-control form-control-solid" placeholder="Enter Quantity" name="quantity" />
                                 </div>
-                                <div class="fv-row mb-8">
-									<div class="mb-3">
-										<label class="d-flex align-items-center fs-6 fw-semibold mb-2">
-											<span class="required">Size</span>
-										</label>
-									</div>
-									<div class="fv-row">
-										<div class="btn-group w-100" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button]">
-											<label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-											<input class="btn-check" type="radio" name="method" value="1" />
-											29</label>
-											<label class="btn btn-outline btn-active-success btn-color-muted active" data-kt-button="true">
-											<input class="btn-check" type="radio" name="method" checked="checked" value="2" />
-											30</label>
-											<label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-											<input class="btn-check" type="radio" name="method" value="3" />
-											31</label>
-											<label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-											<input class="btn-check" type="radio" name="method" value="4" />
-											32</label>
-                                            <label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-                                            <input class="btn-check" type="radio" name="method" value="4" />
-                                            33</label>
-                                            <label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-                                            <input class="btn-check" type="radio" name="method" value="4" />
-                                            34</label>
-                                            <label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-                                            <input class="btn-check" type="radio" name="method" value="4" />
-                                            35</label>
-                                            <label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-                                            <input class="btn-check" type="radio" name="method" value="4" />
-                                            36</label>
-                                            <label class="btn btn-outline btn-active-success btn-color-muted" data-kt-button="true">
-                                            <input class="btn-check" type="radio" name="method" value="4" />
-                                            37</label>
-
-										</div>
-									</div>
-								</div>
                                 <div class="text-center">
                                     <button type="reset" class="btn btn-light me-3" data-kt-modal-action-type="cancel">Cancel</button>
-                                    <button type="submit" class="btn btn-primary" data-kt-modal-action-type="submit">
+                                    <button type="submit" class="btn btn-primary">
                                         <span class="indicator-label">Submit</span>
-                                        <span class="indicator-progress">Please wait... 
-                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                     </button>
                                 </div>
                             </form>
@@ -381,93 +359,79 @@
                 </div>
             </div>
 
-		<div class="modal fade" id="kt_modal_select_users" tabindex="-1" aria-hidden="true">
-			<div class="modal-dialog mw-700px">
-				<div class="modal-content">
-					<div class="modal-header pb-0 border-0 d-flex justify-content-end">
-						<div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-							<i class="ki-outline ki-cross fs-1"></i>
-						</div>
-					</div>
-					<div class="modal-body scroll-y mx-5 mx-xl-10 pt-0 pb-15">
-						<div class="text-center mb-13">
-							<h1 class="d-flex justify-content-center align-items-center mb-3">Order Details
-						</div>
-						<div class="mh-475px scroll-y me-n7 pe-7">
-							<div class="border border-hover-primary p-7 rounded mb-7" style="overflow-y: auto; max-height: 330px;">
-								<div class="d-flex flex-stack pb-3">
-									<div class="d-flex">
-										<div class="symbol symbol-circle symbol-45px">
-											<img src="assets/media/avatars/300-20.jpg" alt="" />
-										</div>
-										<div class="ms-5">
-											<div class="d-flex align-items-center">
-												<a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">Emma Smith</a>
-												<span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
-												<i class="badge py-3 px-4 fs-7 badge-light-primary"></i>Processed</span>
-											</div>
-											<span class="text-muted fw-semibold mb-3">Cabin Crew</span>
-										</div>
-									</div>
-									<div clas="d-flex">
-										<div class="text-end pb-3">
-                                            <span class="text-muted fs-7">ID REQ</span>
-											<span class="text-gray-900 fw-bold fs-5">13777</span>
-										</div>
-									</div>
-								</div>
-								<div class="p-0">
-									<div class="d-flex flex-column">
-                                        <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <a href="apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
-                                                <span class="symbol-label" style="background-image:url(assets/media//stock/ecommerce/25.png);"></span>
-                                            </a>
-                                            <!--end::Thumbnail-->
+            {{-- <div class="modal fade" id="kt_modal_select_users" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog mw-700px">
+                    <div class="modal-content">
+                        <div class="modal-header pb-0 border-0 d-flex justify-content-end">
+                            <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                                <i class="ki-outline ki-cross fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="modal-body scroll-y mx-5 mx-xl-10 pt-0 pb-15">
+                            <div class="text-center mb-13">
+                                <h1 class="d-flex justify-content-center align-items-center mb-3">Order Details</h1>
+                            </div>
+                            <div class="mh-475px scroll-y me-n7 pe-7">
+                                <div class="border border-hover-primary p-7 rounded mb-7" style="overflow-y: auto; max-height: 330px;">
+                                    <div class="d-flex flex-stack pb-3">
+                                        <div class="d-flex">
+                                            <div class="symbol symbol-circle symbol-45px">
+                                                <img src="{{ asset('storage/' . $request->user->profile_picture) }}" alt="" />
+                                            </div>
                                             <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Product 25</a>
-                                                <!--end::Title-->
-                                                <!--begin::SKU-->
-                                                <div class="text-muted fs-7">SKU: 04242006</div>
-                                                <!--end::SKU-->
+                                                <div class="d-flex align-items-center">
+                                                    <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">{{ $request->user->name }}</a>
+                                                    <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
+                                                        <i class="badge py-3 px-4 fs-7 badge-light-primary"></i>{{ $request->status }}</span>
+                                                </div>
+                                                @foreach($request->user->getRoleNames() as $role)
+                                                <span class="text-muted fw-semibold mb-3">{{ $role }}</span>
+                                                @endforeach
                                             </div>
                                         </div>
-                                        <div class="d-flex align-items-center border border-dashed rounded p-3 bg-white">
-                                            <!--begin::Thumbnail-->
-                                            <a href="apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
-                                                <span class="symbol-label" style="background-image:url(assets/media//stock/ecommerce/98.png);"></span>
-                                            </a>
-                                            <!--end::Thumbnail-->
-                                            <div class="ms-5">
-                                                <!--begin::Title-->
-                                                <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">Product 98</a>
-                                                <!--end::Title-->
-                                                <!--begin::Price-->
-                                                <!--begin::SKU-->
-                                                <div class="text-muted fs-7">SKU: 02535007</div>
-                                                <!--end::SKU-->
+                                        <div clas="d-flex">
+                                            <div class="text-end pb-3">
+                                                <span class="text-muted fs-7">ID REQUEST</span>
+                                                <span class="text-gray-900 fw-bold fs-5">{{ $request->id }}</span>
                                             </div>
                                         </div>
-									</div>
-									<div class="d-flex flex-column">
-										<div class="separator separator-dashed border-muted my-5"></div>
-										<div class="d-flex flex-stack">
-											<div class="d-flex flex-column mw-200px">
-												<div class="d-flex align-items-center mb-2">
-													<span class="text-muted fs-8">Date Request</span>
-												</div>
-                                                <div class="d-flex align-items-center mb-2">
-                                                    <span class="text-gray-900 fw-bold fs-5">13/01/2024</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+                                    </div>
+                                    <div class="p-0">
+                                        <div class="d-flex flex-column">
+                                            <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
+                                                <!--begin::Thumbnail-->
+                                                <a href="apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
+                                                    <span class="symbol-label" style="background-image:url({{ asset('images/' . $request->product->image) }});"></span>
+                                                </a>
+                                                <!--end::Thumbnail-->
+                                                <div class="ms-5">
+                                                    <!--begin::Title-->
+                                                    <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->product->product_name }}</a>
+                                                    <!--end::Title-->
+                                                    <!--begin::SKU-->
+                                                    <div class="text-muted fs-7">{{ $request->product->id }}</div>
+                                                    <!--end::SKU-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <div class="separator separator-dashed border-muted my-5"></div>
+                                            <div class="d-flex flex-stack">
+                                                <div class="d-flex flex-column mw-200px">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="text-muted fs-8">Date Request</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="text-gray-900 fw-bold fs-5">{{ $request->created_at }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
             @endsection

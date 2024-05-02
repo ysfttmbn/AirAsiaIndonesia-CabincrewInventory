@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Request;
+use Illuminate\Http\Request as HttpRequest;
 
 class ProductController extends Controller
 {
@@ -113,5 +115,24 @@ class ProductController extends Controller
         $product->delete();
 
     return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+    }
+
+    public function requestInventory(HttpRequest $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $product = Product::findOrFail($request->product_id);
+
+        $newRequest = new Request();
+        $newRequest->user_id = auth()->id();
+        $newRequest->product_id = $product->id;
+        $newRequest->quantity = $request->quantity;
+        $newRequest->status = 'pending';
+        $newRequest->save();
+
+        return redirect()->back()->with('success', 'Request for inventory submitted successfully.');
     }
 }

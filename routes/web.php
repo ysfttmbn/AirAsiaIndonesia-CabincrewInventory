@@ -5,25 +5,17 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('pages.auth.login');
 });
 
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/requestdetails', function () {
     return view('pages.requestdetails');
 })->middleware(['auth', 'verified'])->name('requestdetails');
+
 Route::get('/requestproduct', function () {
     return view('pages.requestproduct');
 })->middleware(['auth', 'verified'])->name('requestproduct');
@@ -43,5 +35,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 });
+
+Route::post('/products/request-inventory', [ProductController::class, 'requestInventory'])->name('products.requestInventory');
 
 require __DIR__.'/auth.php';
