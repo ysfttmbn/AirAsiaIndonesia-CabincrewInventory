@@ -130,7 +130,7 @@ class ProductController extends Controller
         $newRequest->user_id = auth()->id();
         $newRequest->product_id = $product->id;
         $newRequest->quantity = $request->quantity;
-        $newRequest->status = 'pending';
+        $newRequest->status = 'Need Confirm';
         $newRequest->save();
 
         return redirect()->back()->with('success', 'Request for inventory submitted successfully.');

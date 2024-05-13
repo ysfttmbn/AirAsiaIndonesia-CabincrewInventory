@@ -1,6 +1,10 @@
 @extends('layouts.app')
     @section('title', 'Dashboard')                
         @section('content')
+        @php
+            use Carbon\Carbon;
+        @endphp
+        
             <div id="kt_app_content" class="app-content">
                 <div id="kt_app_content_container" class="app-container container-fluid">
                         <div class="row gy-5 g-xl-10">
@@ -98,7 +102,6 @@
                                                     <td class="text-end">{{ $product->category }}</td>
                                                     <td class="text-end">{{ $product->size }}</td>
                                                     <td class="text-end">
-                                                        
                                                         @if ($product->quantity == 0)
                                                             <span class="badge py-3 px-4 fs-7 badge-light-danger">Out of Stock</span>
                                                         @elseif ($product->quantity <= 6)
@@ -131,20 +134,14 @@
                                     </div>
                                 </div>
                                 <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                                    <div class="input-group w-250px">
-                                        <input class="form-control form-control-solid rounded rounded-end-0" placeholder="Pick date range" id="kt_ecommerce_sales_flatpickr" />
-                                        <button class="btn btn-icon btn-light" id="kt_ecommerce_sales_flatpickr_clear">
-                                            <i class="ki-outline ki-cross fs-2"></i>
-                                        </button>
-                                    </div>
                                     <div class="w-100 mw-150px">
                                         <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Status" data-kt-ecommerce-order-filter="status">
                                             <option></option>
                                             <option value="all">All</option>
-                                            <option value="NeedConfirm">Need Confirm</option>
+                                            <option value="Need Confirm">Need Confirm</option>
                                             <option value="Processed">Processed</option>                                        
                                             <option value="Completed">Completed</option>
-                                            <option value="Cancelled">Rejected</option>
+                                            <option value="Rejected">Rejected</option>
                                         </select>
                                     </div>
                                 </div>
@@ -189,8 +186,8 @@
                                             <td class="text-end pe-0" data-order="Completed">
                                                 <div class="badge badge-light-success">{{ $request->status }}</div>
                                             </td>
-                                            <td class="text-end" data-order="2024-01-11">
-                                                <span class="fw-bold">{{ $request->created_at }}</span>
+                                            <td class="text-end">
+                                                <span class="fw-bold">{{ Carbon::createFromFormat('Y-m-d H:i:s', $request->created_at)->format('d/m/Y') }}</span>
                                             </td>
                                             <td class="text-end">
                                                 <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
@@ -276,12 +273,12 @@
                                                                     <div class="d-flex flex-column">
                                                                         <div class="separator separator-dashed border-muted my-5"></div>
                                                                         <div class="d-flex flex-stack">
-                                                                            <div class="d-flex flex-column mw-200px">
+                                                                            <div class="d-flex flex-column mw-200px" >
                                                                                 <div class="d-flex align-items-center mb-2">
                                                                                     <span class="text-muted fs-8">Date Request</span>
                                                                                 </div>
                                                                                 <div class="d-flex align-items-center mb-2">
-                                                                                    <span class="text-gray-900 fw-bold fs-5">{{ $request->created_at }}</span>
+                                                                                    <span class="text-gray-900 fw-bold fs-5">{{ Carbon::createFromFormat('Y-m-d H:i:s', $request->created_at)->format('d/m/Y') }}</span>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="d-flex flex-column mw-200px">
