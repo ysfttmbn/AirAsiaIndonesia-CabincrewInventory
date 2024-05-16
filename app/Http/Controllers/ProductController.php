@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Routing\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use App\Models\Request;
+use App\Models\Request as ProductRequest;
 use Illuminate\Http\Request as HttpRequest;
 
 class ProductController extends Controller
@@ -17,7 +17,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
         $products = Product::orderBy('updated_at', 'desc')->get();
         return view('pages.inventory', compact('products'));
     }
@@ -34,29 +33,36 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreProductRequest $request)
-    {
-        // dd($request->all());
-        $validated = $request->validated();
-        $productId = Str::random(6);
-
+{
     
+    // Validate the request
+    $validated = $request->validated();
+    // dd($request->all());
+    
+    // Buat instance produk baru
     $product = new Product();
+    
+    // Set nilai-nilai dari data yang divalidasi
     $product->id = $this->generateProductId();
-    $product->product_name = $request->product_name;
-    $product->size = $request->size;
-    $product->quantity = $request->quantity;
-    $product->category = $request->category;
+    $product->product_name = $validated['product_name'];
+    $product->size = $validated['size'];
+    $product->quantity = $validated['quantity'];
+    $product->category = $validated['category'];
+
+    // Upload gambar jika ada
     if ($request->hasFile('image')) {
         $image = $request->file('image');
-        $imageName = time().'.'.$image->getClientOriginalExtension();
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('images'), $imageName);
         $product->image = $imageName;
     }
 
+    // Simpan produk ke database
     $product->save();
 
+    // Redirect ke halaman index produk dengan pesan sukses
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
-    }
+}
 
     private function generateProductId()
     {
@@ -79,7 +85,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-    return view('pages.editproduct', compact('product'));
+        return view('pages.editproduct', compact('product'));
     }
 
     /**
@@ -87,24 +93,24 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-    $validated = $request->validated();
-    
-    $product->product_name = $request->product_name;
-    $product->size = $request->size;
-    $product->quantity = $request->quantity;
-    $product->category = $request->category;
+        
+        $validated = $request->validated();
+        $product->product_name = $validated['product_name'];
+        $product->size = $validated['size'];
+        $product->quantity = $validated['quantity'];
+        $product->category = $validated['category'];
 
-    // Handle image update if required
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $imageName = time().'.'.$image->getClientOriginalExtension();
-        $image->move(public_path('images'), $imageName);
-        $product->image = $imageName;
-    }
+        // Handle image update if required
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $product->image = $imageName;
+        }
 
-    $product->save();
+        $product->save();
 
-    return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 
     /**
@@ -114,9 +120,12 @@ class ProductController extends Controller
     {
         $product->delete();
 
-    return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
 
+    /**
+     * Handle request for inventory.
+     */
     public function requestInventory(HttpRequest $request)
     {
         $request->validate([
@@ -126,7 +135,7 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
-        $newRequest = new Request();
+        $newRequest = new ProductRequest();
         $newRequest->user_id = auth()->id();
         $newRequest->product_id = $product->id;
         $newRequest->quantity = $request->quantity;
@@ -135,4 +144,34 @@ class ProductController extends Controller
 
         return redirect()->back()->with('success', 'Request for inventory submitted successfully.');
     }
+
+    /**
+     * Update the status of a request.
+     */
+    public function updateRequestStatus(HttpRequest $request, $requestId, $status)
+    {
+        $requestModel = ProductRequest::findOrFail($requestId);
+
+        // Only allow the specified statuses
+        if (!in_array($status, ['Processed', 'Completed', 'Rejected'])) {
+            return redirect()->back()->with('error', 'Invalid status update.');
+        }
+
+        // Check if the quantity is available before completing the request
+        if ($status == 'Completed') {
+            $product = Product::findOrFail($requestModel->product_id);
+            if ($product->quantity < $requestModel->quantity) {
+                return redirect()->back()->with('error', 'Not enough product quantity.');
+            }
+
+            $product->quantity -= $requestModel->quantity;
+            $product->save();
+        }
+
+        $requestModel->status = $status;
+        $requestModel->save();
+
+        return redirect()->back()->with('success', 'Request status updated successfully.');
+    }
+
 }

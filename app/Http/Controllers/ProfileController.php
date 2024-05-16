@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Illuminate\Foundation\Auth\User;
 
 class ProfileController extends Controller
 {
@@ -71,5 +72,12 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function showProfile($userId)
+    {
+        $user = User::findOrFail($userId);
+        $requests = \App\Models\Request::where('user_id', $userId)->orderBy('created_at', 'desc')->get(); // Menggunakan model Request secara langsung
+        return view('pages.viewprofile', compact('user', 'requests'));
     }
 }

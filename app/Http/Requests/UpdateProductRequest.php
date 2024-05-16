@@ -22,7 +22,11 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'product_name' => 'required|string|max:255',
+            'size' => 'required|string|max:50',
+            'quantity' => 'required|integer|min:1',
+            'category' => 'required|string|max:100',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Contoh aturan untuk gambar
         ];
     }
 }

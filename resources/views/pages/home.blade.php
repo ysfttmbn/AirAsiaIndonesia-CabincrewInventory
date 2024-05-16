@@ -25,22 +25,35 @@
                                             <a href="#card-flush" class="btn btn-sm btn-light">Details</a>
                                         </div>
                                     </div>
+                                    @php
+                                        $user = Auth::user();
+                                    @endphp
                                     <div class="card-body">
                                         <div class="hover-scroll-overlay-y pe-6 me-n6" style="height: 415px">
                                             @foreach ($requests as $request)
-                                            <div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
-                                                <div class="d-flex flex-stack mb-3">
-                                                    <div class="me-3">
-                                                        <img src="{{ asset('images/' . $request->product->image) }}" class="w-50px ms-n1 me-1" alt="" />
-                                                        <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fw-bold">{{ $request->product->product_name }}</a>
+                                                @if($user->hasRole(['admin', 'management']) || ($user->hasRole('cabincrew') && $request->user_id == $user->id))
+                                                    <div class="border border-dashed border-gray-300 rounded px-7 py-3 mb-6">
+                                                        <div class="d-flex flex-stack mb-3">
+                                                            <div class="me-3">
+                                                                <img src="{{ asset('images/' . $request->product->image) }}" class="w-50px ms-n1 me-1" alt="" />
+                                                                <a class="text-gray-800 text-hover-primary fw-bold">{{ $request->product->product_name }}</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex flex-stack">
+                                                            <span class="text-gray-500 fw-bold">To: 
+                                                            <a class="text-gray-800 text-hover-primary fw-bold">{{ $request->user->name }}</a></span>
+                                                            @if($request->status == 'Completed')
+                                                            <span class="badge badge-light-success">{{ $request->status }}</span>
+                                                            @elseif($request->status == 'Rejected')
+                                                            <span class="badge badge-light-danger">{{ $request->status }}</span>
+                                                            @elseif($request->status == 'Processed')
+                                                            <span class="badge badge-light-primary">{{ $request->status }}</span>
+                                                            @else
+                                                            <span class="badge badge-light-warning">{{ $request->status }}</span>
+                                                            @endif
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="d-flex flex-stack">
-                                                    <span class="text-gray-500 fw-bold">To: 
-                                                    <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">{{ $request->user->name }}</a></span>
-                                                    <span class="badge badge-light-success">{{ $request->status }}</span>
-                                                </div>
-                                            </div>
+                                                @endif
                                             @endforeach
                                         </div>
                                     </div>
@@ -57,7 +70,7 @@
                                             <div class="d-flex flex-stack flex-wrap gap-4">
                                                 @foreach(Auth::user()->getRoleNames() as $role)
                                                         @if($role == 'cabincrew')
-                                                        <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Item</a>
+                                                        <a class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Item</a>
                                                         @elseif($role == 'admin' || $role == 'management')
                                                         <a href="{{ route('products.create') }}" class="btn btn-primary er fs-6 px-8 py-4">Add Item</a>
                                                         @endif
@@ -90,11 +103,11 @@
                                                 <tr>
                                                     <td>
                                                         <div class="d-flex align-items-center">
-                                                            <a href="#" class="symbol symbol-50px">
+                                                            <a class="symbol symbol-50px">
                                                                 <span class="symbol-label" style="background-image:url({{ asset('images/' . $product->image) }});"></span>
                                                             </a>
                                                             <div class="ms-5">
-                                                                <a href="#" class="text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name">{{ $product->product_name }}</a>
+                                                                <a class="text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name">{{ $product->product_name }}</a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -160,60 +173,90 @@
                                             <th class="text-end min-w-100px">Actions</th>
                                         </tr>
                                     </thead>
+                                    @php
+                                        $user = Auth::user();
+                                    @endphp
                                     <tbody class="fw-semibold text-gray-600">
                                         @foreach ($requests as $request)
+                                        @if($user->hasRole(['admin', 'management']) || ($user->hasRole('cabincrew') && $request->user_id == $user->id))
                                         <tr>
                                             <td>
                                                 <div class="form-check form-check-sm form-check-custom form-check-solid"></div>
                                             </td>
                                             <td data-kt-ecommerce-order-filter="order_id">
-                                                <a href="apps/ecommerce/sales/details.html" class="text-gray-800 text-hover-primary fw-bold">{{ $request->id }}</a>
+                                                <a class="text-gray-800 text-hover-primary fw-bold">{{ $request->id }}</a>
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                                                        <a href="apps/user-management/users/view.html">
+                                                        @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
+                                                        <a href="{{ route('user.profile', ['userId' => $request->user->id]) }}">
+                                                        @else
+                                                        <a>
+                                                        @endif
                                                             <div class="symbol-label">
                                                                 <img src="{{ asset('storage/' . $request->user->profile_picture) }}" alt="User Profile" class="w-100" />
                                                             </div>
                                                         </a>
                                                     </div>
                                                     <div class="ms-5">
-                                                        <a href="apps/user-management/users/view.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->user->name }}</a>
+                                                        @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
+                                                        <a href="{{ route('user.profile', ['userId' => $request->user->id]) }}" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->user->name }}</a>
+                                                        @else
+                                                        <a class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->user->name }}</a>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="text-end pe-0" data-order="Completed">
-                                                <div class="badge badge-light-success">{{ $request->status }}</div>
+                                                @if($request->status == 'Completed')
+                                                    <div class="badge badge-light-success">{{ $request->status }}</div>
+                                                @elseif($request->status == 'Rejected')
+                                                    <div class="badge badge-light-danger">{{ $request->status }}</div>
+                                                @elseif($request->status == 'Processed')
+                                                <div class="badge badge-light-primary">{{ $request->status }}</div>
+                                                @else
+                                                    <div class="badge badge-light-warning">{{ $request->status }}</div>
+                                                @endif
                                             </td>
                                             <td class="text-end">
                                                 <span class="fw-bold">{{ Carbon::createFromFormat('Y-m-d H:i:s', $request->created_at)->format('d/m/Y') }}</span>
                                             </td>
                                             <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                <a class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                                     Actions <i class="ki-outline ki-down fs-5 ms-1"></i>
                                                 </a>
                                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                                     <div class="menu-item px-3">
-                                                        <a href="#" data-bs-toggle="modal" data-bs-target="#kt_modal_select_users_{{ $request->id }}" class="menu-link px-3">View</a>
+                                                        <a data-bs-toggle="modal" data-bs-target="#kt_modal_select_users_{{ $request->id }}" class="menu-link px-3">View</a>
                                                     </div>
                                                     @foreach(Auth::user()->getRoleNames() as $role)
-                                                    @if($role == 'cabincrew')
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3">Accepted</a>
-                                                    </div>
-                                                    @elseif($role == 'admin' || $role == 'management')
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3">Confirm</a>
-                                                    </div>
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-kt-ecommerce-order-filter="delete_row">Reject</a>
-                                                    </div>
-                                                    @endif
+                                                        @if($role == 'cabincrew' && $request->status == 'Processed')
+                                                            <div class="menu-item px-3">
+                                                                <form action="{{ route('requests.updateStatus', ['requestId' => $request->id, 'status' => 'Completed']) }}" method="POST">
+                                                                    @csrf
+                                                                    <button type="submit" class="menu-link px-3">Accepted</button>
+                                                                </form>
+                                                            </div>
+                                                        @elseif(($role == 'admin' || $role == 'management') && $request->status == 'Need Confirm')
+                                                            <div class="menu-item px-3">
+                                                                <form action="{{ route('requests.updateStatus', ['requestId' => $request->id, 'status' => 'Processed']) }}" method="POST">
+                                                                    @csrf
+                                                                    <button type="submit" class="menu-link px-3">Confirm</button>
+                                                                </form>
+                                                            </div>
+                                                            <div class="menu-item px-3">
+                                                                <form action="{{ route('requests.updateStatus', ['requestId' => $request->id, 'status' => 'Rejected']) }}" method="POST">
+                                                                    @csrf
+                                                                    <button type="submit" class="menu-link px-3">Reject</button>
+                                                                </form>
+                                                            </div>
+                                                        @endif
                                                     @endforeach
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endif
                                         <!-- Modal -->
                                         <div class="modal fade" id="kt_modal_select_users_{{ $request->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog mw-700px">
@@ -236,9 +279,20 @@
                                                                         </div>
                                                                         <div class="ms-5">
                                                                             <div class="d-flex align-items-center">
-                                                                                <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">{{ $request->user->name }}</a>
-                                                                                <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
-                                                                                    <i class="badge py-3 px-4 fs-7 badge-light-primary"></i>{{ $request->status }}</span>
+                                                                                <a href="{{ route('user.profile', ['userId' => $request->user->id]) }}" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">{{ $request->user->name }}</a>
+                                                                                    @if($request->status == 'Completed')
+                                                                                    <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
+                                                                                        <i class="badge py-3 px-4 fs-7 badge-light-success"></i>{{ $request->status }}</span>
+                                                                                    @elseif($request->status == 'Rejected')
+                                                                                    <span class="badge badge-light-danger d-flex align-items-center fs-8 fw-semibold">
+                                                                                        <i class="badge py-3 px-4 fs-7 badge-light-danger"></i>{{ $request->status }}</span>
+                                                                                    @elseif($request->status == 'Processed')
+                                                                                    <span class="badge badge-light-primary d-flex align-items-center fs-8 fw-semibold">
+                                                                                        <i class="badge py-3 px-4 fs-7 badge-light-primary"></i>{{ $request->status }}</span>
+                                                                                    @else
+                                                                                    <span class="badge badge-light-warning d-flex align-items-center fs-8 fw-semibold">
+                                                                                        <i class="badge py-3 px-4 fs-7 badge-light-warning"></i>{{ $request->status }}</span>
+                                                                                    @endif
                                                                             </div>
                                                                             @foreach($request->user->getRoleNames() as $role)
                                                                             <span class="text-muted fw-semibold mb-3">{{ $role }}</span>
@@ -256,13 +310,13 @@
                                                                     <div class="d-flex flex-column">
                                                                         <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
                                                                             <!--begin::Thumbnail-->
-                                                                            <a href="apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
+                                                                            <a class="symbol symbol-50px">
                                                                                 <span class="symbol-label" style="background-image:url({{ asset('images/' . $request->product->image) }});"></span>
                                                                             </a>
                                                                             <!--end::Thumbnail-->
                                                                             <div class="ms-5">
                                                                                 <!--begin::Title-->
-                                                                                <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->product->product_name }}</a>
+                                                                                <a class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->product->product_name }}</a>
                                                                                 <!--end::Title-->
                                                                                 <!--begin::SKU-->
                                                                                 <div class="text-muted fs-7">{{ $request->product->id }}</div>
@@ -322,7 +376,7 @@
                                 <div class="mb-13 text-center">
                                     <h1 class="mb-3">Place your Request</h1>
                                     <div class="text-muted fw-semibold fs-5">If you need more info, please conctact
-                                    <a href="#" class="fw-bold link-primary">Administrator</a>.</div>
+                                    <a class="fw-bold link-primary">Administrator</a>.</div>
                                 </div>
                                 <div class="fv-row mb-8">
                                     <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
@@ -355,80 +409,4 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="modal fade" id="kt_modal_select_users" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog mw-700px">
-                    <div class="modal-content">
-                        <div class="modal-header pb-0 border-0 d-flex justify-content-end">
-                            <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
-                                <i class="ki-outline ki-cross fs-1"></i>
-                            </div>
-                        </div>
-                        <div class="modal-body scroll-y mx-5 mx-xl-10 pt-0 pb-15">
-                            <div class="text-center mb-13">
-                                <h1 class="d-flex justify-content-center align-items-center mb-3">Order Details</h1>
-                            </div>
-                            <div class="mh-475px scroll-y me-n7 pe-7">
-                                <div class="border border-hover-primary p-7 rounded mb-7" style="overflow-y: auto; max-height: 330px;">
-                                    <div class="d-flex flex-stack pb-3">
-                                        <div class="d-flex">
-                                            <div class="symbol symbol-circle symbol-45px">
-                                                <img src="{{ asset('storage/' . $request->user->profile_picture) }}" alt="" />
-                                            </div>
-                                            <div class="ms-5">
-                                                <div class="d-flex align-items-center">
-                                                    <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">{{ $request->user->name }}</a>
-                                                    <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
-                                                        <i class="badge py-3 px-4 fs-7 badge-light-primary"></i>{{ $request->status }}</span>
-                                                </div>
-                                                @foreach($request->user->getRoleNames() as $role)
-                                                <span class="text-muted fw-semibold mb-3">{{ $role }}</span>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                        <div clas="d-flex">
-                                            <div class="text-end pb-3">
-                                                <span class="text-muted fs-7">ID REQUEST</span>
-                                                <span class="text-gray-900 fw-bold fs-5">{{ $request->id }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-0">
-                                        <div class="d-flex flex-column">
-                                            <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                                <!--begin::Thumbnail-->
-                                                <a href="apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
-                                                    <span class="symbol-label" style="background-image:url({{ asset('images/' . $request->product->image) }});"></span>
-                                                </a>
-                                                <!--end::Thumbnail-->
-                                                <div class="ms-5">
-                                                    <!--begin::Title-->
-                                                    <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->product->product_name }}</a>
-                                                    <!--end::Title-->
-                                                    <!--begin::SKU-->
-                                                    <div class="text-muted fs-7">{{ $request->product->id }}</div>
-                                                    <!--end::SKU-->
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex flex-column">
-                                            <div class="separator separator-dashed border-muted my-5"></div>
-                                            <div class="d-flex flex-stack">
-                                                <div class="d-flex flex-column mw-200px">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <span class="text-muted fs-8">Date Request</span>
-                                                    </div>
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <span class="text-gray-900 fw-bold fs-5">{{ $request->created_at }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
             @endsection
