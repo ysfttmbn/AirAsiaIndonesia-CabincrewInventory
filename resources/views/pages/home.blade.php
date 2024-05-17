@@ -367,7 +367,7 @@
                     <div class="modal-content rounded">
                         <div class="modal-header pb-0 border-0 justify-content-end">
                             <div class="btn btn-sm btn-icon btn-active-color-primary" data-kt-modal-action-type="close">
-                                <i class="ki-outline ki-cross fs-1"></i>
+                                <a href="{{ route('dashboard') }}" class="ki-outline ki-cross fs-1"></a>
                             </div>
                         </div>
                         <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
@@ -386,7 +386,7 @@
                                         <select name="product_id" aria-label="Select a Currency" data-placeholder="Select a currency.." class="form-select form-select-solid form-select-lg">
                                             @foreach($products as $product)
                                             <option value="{{ $product->id}}" selected="selected">
-                                            <b>{{ $product->id}}</b>&nbsp;-&nbsp;{{ $product->product_name}}</option>
+                                            <b>{{ $product->id}}</b>&nbsp;-&nbsp;{{ $product->product_name}}</b>&nbsp;-&nbsp;Size {{ $product->size}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -396,10 +396,10 @@
                                         <span class="required">Quantity</span>
                                         </span>
                                     </label>
-                                    <input type="number" class="form-control form-control-solid" placeholder="Enter Quantity" name="quantity" />
+                                    <input type="number" class="form-control form-control-solid" placeholder="Enter Quantity" autocomplete="off" name="quantity" />
                                 </div>
                                 <div class="text-center">
-                                    <button type="reset" class="btn btn-light me-3" data-kt-modal-action-type="cancel">Cancel</button>
+                                    <button href="{{ route('dashboard') }}" class="btn btn-light me-3" data-kt-modal-action-type="cancel">Cancel</button>
                                     <button type="submit" class="btn btn-primary">
                                         <span class="indicator-label">Submit</span>
                                     </button>

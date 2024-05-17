@@ -195,112 +195,119 @@ var KTAppEcommerceSaveProduct = (function () {
                     });
                 })(),
                 (() => {
-                    let e;
-                    const t = document.getElementById(
+                    let formValidationInstance;
+                    const form = document.getElementById(
                             "kt_ecommerce_add_product_form"
                         ),
-                        o = document.getElementById(
+                        submitButton = document.getElementById(
                             "kt_ecommerce_add_product_submit"
                         );
-                    (e = FormValidation.formValidation(t, {
-                        fields: {
-                            product_name: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Product name is required",
+
+                    formValidationInstance = FormValidation.formValidation(
+                        form,
+                        {
+                            fields: {
+                                product_name: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Product name is required",
+                                        },
+                                    },
+                                },
+                                size: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Size is required",
+                                        },
+                                    },
+                                },
+                                quantity: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Quantity is required",
+                                        },
+                                    },
+                                },
+                                category: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Category is required",
+                                        },
+                                    },
+                                },
+                                image: {
+                                    validators: {
+                                        notEmpty: {
+                                            message: "Image is required",
+                                        },
                                     },
                                 },
                             },
-                            size: {
-                                validators: {
-                                    notEmpty: { message: "SKU is required" },
-                                },
+                            plugins: {
+                                trigger: new FormValidation.plugins.Trigger(),
+                                bootstrap:
+                                    new FormValidation.plugins.Bootstrap5({
+                                        rowSelector: ".fv-row",
+                                        eleInvalidClass: "",
+                                        eleValidClass: "",
+                                    }),
                             },
-                            quantity: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Product barcode is required",
-                                    },
-                                },
-                            },
-                            category: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "Shelf quantity is required",
-                                    },
-                                },
-                            },
-                            image: {
-                                validators: {
-                                    notEmpty: {
-                                        message:
-                                            "Product base price is required",
-                                    },
-                                },
-                            },
-                        },
-                        plugins: {
-                            trigger: new FormValidation.plugins.Trigger(),
-                            bootstrap: new FormValidation.plugins.Bootstrap5({
-                                rowSelector: ".fv-row",
-                                eleInvalidClass: "",
-                                eleValidClass: "",
-                            }),
-                        },
-                    })),
-                        o.addEventListener("click", (a) => {
-                            a.preventDefault(),
-                                e &&
-                                    e.validate().then(function (e) {
-                                        console.log("validated!"),
-                                            "Valid" == e
-                                                ? (o.setAttribute(
-                                                      "data-kt-indicator",
-                                                      "on"
-                                                  ),
-                                                  (o.disabled = !0),
-                                                  setTimeout(function () {
-                                                      o.removeAttribute(
-                                                          "data-kt-indicator"
-                                                      ),
-                                                          Swal.fire({
-                                                              text: "Form has been successfully submitted!",
-                                                              icon: "success",
-                                                              buttonsStyling:
-                                                                  !1,
-                                                              confirmButtonText:
-                                                                  "Ok, got it!",
-                                                              customClass: {
-                                                                  confirmButton:
-                                                                      "btn btn-primary",
-                                                              },
-                                                          }).then(function (e) {
-                                                              e.isConfirmed &&
-                                                                  ((o.disabled =
-                                                                      !1),
-                                                                  (window.location =
-                                                                      t.getAttribute(
-                                                                          "data-kt-redirect"
-                                                                      )));
-                                                          });
-                                                  }, 2e3))
-                                                : Swal.fire({
-                                                      html: "Sorry, looks like there are some errors detected, please try again. <br/><br/>Please note that there may be errors in the <strong>General</strong> or <strong>Advanced</strong> tabs",
-                                                      icon: "error",
-                                                      buttonsStyling: !1,
-                                                      confirmButtonText:
-                                                          "Ok, got it!",
-                                                      customClass: {
-                                                          confirmButton:
-                                                              "btn btn-primary",
-                                                      },
-                                                  });
+                        }
+                    );
+
+                    submitButton.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        if (formValidationInstance) {
+                            formValidationInstance.validate().then((status) => {
+                                console.log("validated!");
+                                if (status === "Valid") {
+                                    submitButton.setAttribute(
+                                        "data-kt-indicator",
+                                        "on"
+                                    );
+                                    submitButton.disabled = true;
+                                    setTimeout(() => {
+                                        submitButton.removeAttribute(
+                                            "data-kt-indicator"
+                                        );
+                                        Swal.fire({
+                                            text: "Form has been successfully submitted!",
+                                            icon: "success",
+                                            buttonsStyling: false,
+                                            confirmButtonText: "Ok, got it!",
+                                            customClass: {
+                                                confirmButton:
+                                                    "btn btn-primary",
+                                            },
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                submitButton.disabled = false;
+                                                window.location =
+                                                    form.getAttribute(
+                                                        "data-kt-redirect"
+                                                    );
+                                            }
+                                        });
+                                    }, 2000);
+                                } else {
+                                    Swal.fire({
+                                        html: "Sorry, looks like there are some errors detected, please try again. <br/><br/>Please note that there may be errors in the <strong>General</strong> or <strong>Advanced</strong> tabs",
+                                        icon: "error",
+                                        buttonsStyling: false,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton: "btn btn-primary",
+                                        },
                                     });
-                        });
+                                }
+                            });
+                        }
+                    });
                 })();
         },
     };
 })();
+
 KTUtil.onDOMContentLoaded(function () {
     KTAppEcommerceSaveProduct.init();
 });

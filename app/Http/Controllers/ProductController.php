@@ -34,10 +34,8 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
 {
-    
     // Validate the request
     $validated = $request->validated();
-    // dd($request->all());
     
     // Buat instance produk baru
     $product = new Product();
@@ -63,6 +61,7 @@ class ProductController extends Controller
     // Redirect ke halaman index produk dengan pesan sukses
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
 }
+
 
     private function generateProductId()
     {

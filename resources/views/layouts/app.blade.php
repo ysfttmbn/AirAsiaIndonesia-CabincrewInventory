@@ -9,6 +9,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
         <!-- Styles -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <!-- Vendor Stylesheets(used for this page only) -->
@@ -62,6 +63,7 @@
         <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
         <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
         <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{{ asset('assets/js/custom/apps/file-manager/settings.js') }}"></script>
         <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
         <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>		

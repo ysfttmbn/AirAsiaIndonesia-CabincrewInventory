@@ -13,6 +13,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::post('/requests/{requestId}/status/{status}', [ProductController::class, 'updateRequestStatus'])->name('requests.updateStatus');
 Route::get('/user/profile/{userId}', [ProfileController::class, 'showProfile'])->name('user.profile');
+Route::get('/users/{userId}', [ProfileController::class, 'index'])->name('users.index');
 
 
 Route::get('/requestdetails', function () {

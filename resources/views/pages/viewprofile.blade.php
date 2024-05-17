@@ -66,23 +66,9 @@
 									</div>		
 
                                     <div class="card mb-5 mb-xl-10">
-									<div class="card">
 										<div class="card-header card-header-stretch border-bottom border-gray-200">
 											<div class="card-title">
 												<h3 class="fw-bold m-0">Request History</h3>
-											</div>
-											<div class="card-toolbar m-0">
-												<ul class="nav nav-stretch nav-line-tabs border-transparent" role="tablist">
-													<li class="nav-item" role="presentation">
-														<a id="kt_billing_6months_tab" class="nav-link fs-5 fw-semibold me-3 active" data-bs-toggle="tab" role="tab" href="#kt_billing_months">Month</a>
-													</li>
-													<li class="nav-item" role="presentation">
-														<a id="kt_billing_1year_tab" class="nav-link fs-5 fw-semibold me-3" data-bs-toggle="tab" role="tab" href="#kt_billing_year">Year</a>
-													</li>
-													<li class="nav-item" role="presentation">
-														<a id="kt_billing_alltime_tab" class="nav-link fs-5 fw-semibold" data-bs-toggle="tab" role="tab" href="#kt_billing_all">All Time</a>
-													</li>
-												</ul>
 											</div>
 										</div>
 										<div class="tab-content">
@@ -102,7 +88,7 @@
 															<tr>
 																<td>{{ $request->created_at->format('M d, Y') }}</td>
 																<td>
-																	<a href="#">{{ $request->id }}</a>
+																	<a>{{ $request->id }}</a>
 																</td>
 																<td>{{ $request->status }}</td>
 																<td class="text-right">
