@@ -8,16 +8,21 @@
 			<div class="d-flex flex-column flex-column-fluid">
 				<div id="kt_app_content" class="app-content flex-column-fluid">
 					<div id="kt_app_content_container" class="app-container container-fluid">
-						<div class="card mb-5 mb-xl-10">
+							@if(session('status'))
+                                <div class="alert alert-success d-flex justify-content-between align-items-center">
+                                    <span>{{ session('status') }}</span>
+                                </div>
+                            @endif
+							<div class="card mb-5 mb-xl-10">
 							<div class="card-body pt-9 pb-0">
 								<div class="d-flex flex-wrap flex-sm-nowrap">
 									<div class="me-7 mb-4">
 										<div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
 											@if ($user->profile_picture)
-    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
-@else
-    <img src="{{ asset('assets/media/svg/avatars/blank.svg') }}" alt="Default Profile Picture">
-@endif
+												<img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+											@else
+												<img src="{{ asset('assets/media/svg/avatars/blank.svg') }}" alt="Default Profile Picture">
+											@endif
 											<div class="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-body h-20px w-20px"></div>
 										</div>
 									</div>
@@ -107,10 +112,19 @@
 												<div class="row mb-6">
 													<x-input-label for="phone_number" :value="__('Phone Number')" class="col-lg-4 col-form-label fw-semibold fs-6"/>
 													<div class="col-lg-8 fv-row">
-														<x-text-input id="phone_number" name="phone_number" type="phone_number" class="form-control form-control-lg form-control-solid" :value="old('phone_number', $user->phone_number)" required autocomplete="username" />
+														<x-text-input 
+															id="phone_number" 
+															name="phone_number" 
+															type="text" 
+															class="form-control form-control-lg form-control-solid" 
+															:value="old('phone_number', $user->phone_number ?? '+62')" 
+															required 
+															autocomplete="username" 
+														/>
 													</div>
 													<x-input-error class="mt-2" :messages="$errors->get('phone_number')" />
 												</div>
+												
 										
 												<div class="row mb-6">
 													<x-input-label for="hub" :value="__('HUB')" class="col-lg-4 col-form-label fw-semibold fs-6"/>

@@ -147,16 +147,20 @@ class ProductController extends Controller
     /**
      * Update the status of a request.
      */
+    private function generateWhatsAppLink($phoneNumber, $message)
+    {
+        $encodedMessage = urlencode($message);
+        return "https://wa.me/$phoneNumber?text=$encodedMessage";
+    }
+
     public function updateRequestStatus(HttpRequest $request, $requestId, $status)
     {
         $requestModel = ProductRequest::findOrFail($requestId);
 
-        // Only allow the specified statuses
         if (!in_array($status, ['Processed', 'Completed', 'Rejected'])) {
             return redirect()->back()->with('error', 'Invalid status update.');
         }
 
-        // Check if the quantity is available before completing the request
         if ($status == 'Completed') {
             $product = Product::findOrFail($requestModel->product_id);
             if ($product->quantity < $requestModel->quantity) {
@@ -170,7 +174,16 @@ class ProductController extends Controller
         $requestModel->status = $status;
         $requestModel->save();
 
+        // Hanya buat tautan WhatsApp untuk status "Processed" atau "Rejected"
+        if (in_array($status, ['Processed', 'Rejected'])) {
+            $user = $requestModel->user;
+            $message = "Your request for product {$requestModel->product_id} has been {$status}.";
+            $whatsappLink = $this->generateWhatsAppLink($user->phone_number, $message);
+            return redirect()->back()->with('success', 'Request status updated successfully.')->with('whatsappLink', $whatsappLink);
+        }
+
         return redirect()->back()->with('success', 'Request status updated successfully.');
     }
+
 
 }

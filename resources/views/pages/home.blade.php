@@ -4,9 +4,18 @@
         @php
             use Carbon\Carbon;
         @endphp
-        
             <div id="kt_app_content" class="app-content">
                 <div id="kt_app_content_container" class="app-container container-fluid">
+                    @if(session('success'))
+                        <div class="alert alert-success d-flex justify-content-between align-items-center">
+                            <span>{{ session('success') }}</span>
+                            @if(session('whatsappLink'))
+                                <a href="{{ session('whatsappLink') }}" target="_blank" class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success ms-3">
+                                    <i class="bi bi-whatsapp fs-2 me-2"></i>Send WhatsApp Message
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                         <div class="row gy-5 g-xl-10">
                             <div class="col-xl-4">
                                 <div class="card card-flush h-xl-100">
@@ -19,7 +28,6 @@
                                                     <span class="card-label fw-bold text-gray-900">Request Process</span>
                                                 @endif
                                             @endforeach
-
                                         </h3>
                                         <div class="card-toolbar">
                                             <a href="#card-flush" class="btn btn-sm btn-light">Details</a>
@@ -69,14 +77,22 @@
                                         <div class="card-toolbar">
                                             <div class="d-flex flex-stack flex-wrap gap-4">
                                                 @foreach(Auth::user()->getRoleNames() as $role)
-                                                        @if($role == 'cabincrew')
-                                                        <a class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Item</a>
-                                                        @elseif($role == 'admin' || $role == 'management')
+                                                    @if($role == 'cabincrew')
+                                                        <div class="position-relative">
+                                                            @if(Auth::user()->phone_number)
+                                                                <a class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Item</a>
+                                                            @else
+                                                                <button class="btn btn-primary er fs-6 px-8 py-4" disabled>Request Item</button>
+                                                                <div class="text-danger fs-8 mt-2">Please Complete your profile</div>
+                                                            @endif
+                                                        </div>
+                                                    @elseif($role == 'admin' || $role == 'management')
                                                         <a href="{{ route('products.create') }}" class="btn btn-primary er fs-6 px-8 py-4">Add Item</a>
-                                                        @endif
-                                                    @endforeach
-                                            </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>                                            
                                         </div>
+                                        
                                     </div>
                                     <div class="card-body">
                                             @foreach(Auth::user()->getRoleNames() as $role)
@@ -95,7 +111,6 @@
                                                     @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
                                                     <th class="min-w-100px text-end pe-0">QTY</th>
                                                     @endif
-                                                    
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
@@ -257,7 +272,7 @@
                                             </td>
                                         </tr>
                                         @endif
-                                        <!-- Modal -->
+
                                         <div class="modal fade" id="kt_modal_select_users_{{ $request->id }}" tabindex="-1" aria-hidden="true">
                                             <div class="modal-dialog mw-700px">
                                                 <div class="modal-content">
@@ -309,18 +324,12 @@
                                                                 <div class="p-0">
                                                                     <div class="d-flex flex-column">
                                                                         <div class="d-flex align-items-center border border-dashed p-3 rounded bg-white">
-                                                                            <!--begin::Thumbnail-->
                                                                             <a class="symbol symbol-50px">
                                                                                 <span class="symbol-label" style="background-image:url({{ asset('images/' . $request->product->image) }});"></span>
                                                                             </a>
-                                                                            <!--end::Thumbnail-->
                                                                             <div class="ms-5">
-                                                                                <!--begin::Title-->
                                                                                 <a class="text-gray-800 text-hover-primary fs-5 fw-bold">{{ $request->product->product_name }}</a>
-                                                                                <!--end::Title-->
-                                                                                <!--begin::SKU-->
                                                                                 <div class="text-muted fs-7">{{ $request->product->id }}</div>
-                                                                                <!--end::SKU-->
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -352,7 +361,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- End Modal -->
                                         @endforeach
                                     </tbody>
                                 </table>                                
@@ -361,7 +369,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="modal fade" id="kt_modal_bidding" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered mw-650px">
                     <div class="modal-content rounded">
