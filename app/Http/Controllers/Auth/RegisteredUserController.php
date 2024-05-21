@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -8,7 +7,6 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
@@ -30,7 +28,6 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // dd($request->all());
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
@@ -45,9 +42,12 @@ class RegisteredUserController extends Controller
             // 'profile_picture' => $request->hasFile('profile_picture') ? request()->file('profile_picture')->store('public/assets/media/upload') : null,
         ]);
 
+        // Assign the 'cabincrew' role to the new user
+        $user->assignRole('cabincrew');
+
         event(new Registered($user));
 
-        Auth::login($user);
-        return redirect(RouteServiceProvider::HOME);
+        // Redirect to login page after registration
+        return redirect()->route('login')->with('success', 'Registration successful. Please login to continue.');
     }
 }

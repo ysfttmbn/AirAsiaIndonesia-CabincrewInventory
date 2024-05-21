@@ -27,12 +27,12 @@ class UserSeeder extends Seeder
         ]);
         $cabincrew->assignRole('cabincrew');
 
-        $cabincrew = User::create([
-            'name' => 'yosafat',
-            'email' => 'yosafat@gmail.com',
-            'password' => bcrypt('yosafat123')
-        ]);
-        $cabincrew->assignRole('cabincrew');
+        // $cabincrew = User::create([
+        //     'name' => 'yosafat',
+        //     'email' => 'yosafat@gmail.com',
+        //     'password' => bcrypt('yosafat123')
+        // ]);
+        // $cabincrew->assignRole('cabincrew');
 
         $management = User::create([
             'name' => 'management',
