@@ -65,6 +65,120 @@
                                         </div>
 									</div>		
 
+									<div class="card mb-5 mb-xl-10">
+										<div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+											<div class="card-title m-0">
+												<h3 class="fw-bold m-0">Personal Details Size</h3>
+											</div>
+										</div>
+										<div id="kt_account_settings_profile_details" class="collapse show">
+											<form method="POST" action="{{ route('profile.update.size', ['userId' => $user->id ?? null]) }}" enctype="multipart/form-data" class="mt-6 space-y-6">
+												@csrf
+												@method('patch')
+												<div class="card-body border-top p-9">
+													@if($user->gender == 'female')
+														<!-- Female Cabin Shoes -->
+														<div class="row mb-6">
+															<label for="female_cabin_shoes" class="col-lg-4 col-form-label fw-semibold fs-6">Female Cabin Shoes</label>
+															<div class="col-lg-8 fv-row">
+																<select id="female_cabin_shoes" name="female_cabin_shoes" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="female_cabin_shoes">
+																	@foreach(range(35, 43) as $size)
+																		<option value="{{ $size }}" {{ old('female_cabin_shoes', $user->personalDetailsSize->female_cabin_shoes ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+														<!-- Female Ground Shoes -->
+														<div class="row mb-6">
+															<label for="female_ground_shoes" class="col-lg-4 col-form-label fw-semibold fs-6">Female Ground Shoes</label>
+															<div class="col-lg-8 fv-row">
+																<select id="female_ground_shoes" name="female_ground_shoes" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="female_ground_shoes">
+																	@foreach(range(35, 43) as $size)
+																		<option value="{{ $size }}" {{ old('female_ground_shoes', $user->personalDetailsSize->female_ground_shoes ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+														<!-- Female Red Skirt -->
+														<div class="row mb-6">
+															<label for="female_red_skirt" class="col-lg-4 col-form-label fw-semibold fs-6">Female Red Skirt</label>
+															<div class="col-lg-8 fv-row">
+																<select id="female_red_skirt" name="female_red_skirt" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="female_red_skirt">
+																	@foreach(['XS', 'S', 'S+', 'M', 'M+', 'L', 'L+', 'XL'] as $size)
+																		<option value="{{ $size }}" {{ old('female_red_skirt', $user->personalDetailsSize->female_red_skirt ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+														<!-- Female Red Blazer -->
+														<div class="row mb-6">
+															<label for="female_red_blazer" class="col-lg-4 col-form-label fw-semibold fs-6">Female Red Blazer</label>
+															<div class="col-lg-8 fv-row">
+																<select id="female_red_blazer" name="female_red_blazer" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="female_red_blazer">
+																	@foreach(['XS', 'S', 'M', 'L', 'XL'] as $size)
+																		<option value="{{ $size }}" {{ old('female_red_blazer', $user->personalDetailsSize->female_red_blazer ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+														<!-- Compression Top -->
+														<div class="row mb-6">
+															<label for="compression_top" class="col-lg-4 col-form-label fw-semibold fs-6">Compression Top</label>
+															<div class="col-lg-8 fv-row">
+																<select id="compression_top" name="compression_top" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="compression_top">
+																	@foreach(['XS', 'S', 'M', 'L'] as $size)
+																		<option value="{{ $size }}" {{ old('compression_top', $user->personalDetailsSize->compression_top ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+													@elseif($user->gender == 'male')
+														<!-- Male Black Pants -->
+														<div class="row mb-6">
+															<label for="male_black_pants" class="col-lg-4 col-form-label fw-semibold fs-6">Male Black Pants</label>
+															<div class="col-lg-8 fv-row">
+																<select id="male_black_pants" name="male_black_pants" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="male_black_pants">
+																	@foreach(range(29, 37) as $size)
+																		<option value="{{ $size }}" {{ old('male_black_pants', $user->personalDetailsSize->male_black_pants ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+														<!-- Male Shoes -->
+														<div class="row mb-6">
+															<label for="male_shoes" class="col-lg-4 col-form-label fw-semibold fs-6">Male Shoes</label>
+															<div class="col-lg-8 fv-row">
+																<select id="male_shoes" name="male_shoes" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="male_shoes">
+																	@foreach(range(39, 47) as $size)
+																		<option value="{{ $size }}" {{ old('male_shoes', $user->personalDetailsSize->male_shoes ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+														<!-- Male Black Blazer -->
+														<div class="row mb-6">
+															<label for="male_black_blazer" class="col-lg-4 col-form-label fw-semibold fs-6">Male Black Blazer</label>
+															<div class="col-lg-8 fv-row">
+																<select id="male_black_blazer" name="male_black_blazer" class="form-select form-select-solid form-select-lg fw-semibold" required autocomplete="male_black_blazer">
+																	@foreach(range(29, 37) as $size)
+																		<option value="{{ $size }}" {{ old('male_black_blazer', $user->personalDetailsSize->male_black_blazer ?? '') == $size ? 'selected' : '' }}>{{ $size }}</option>
+																	@endforeach
+																</select>
+															</div>
+														</div>
+													@endif
+													@if(auth()->check() && (auth()->user()->hasRole('admin')))
+													<div class="card-footer d-flex justify-content-end py-6 px-9">
+														<button type="submit" class="btn btn-primary">Save</button>
+													</div>
+													@endif
+												</div>
+											</form>
+											
+											
+										</div>
+									</div>
+
                                     <div class="card mb-5 mb-xl-10">
 										<div class="card-header card-header-stretch border-bottom border-gray-200">
 											<div class="card-title">
@@ -78,7 +192,7 @@
 														<thead class="border-bottom border-gray-200 fs-6 text-gray-600 fw-bold bg-light bg-opacity-75">
 															<tr>
 																<td class="min-w-150px">Date</td>
-																<td class="min-w-250px">ID Request</td>
+																<td class="min-w-250px">Description</td>
 																<td class="min-w-150px">Status</td>
 																<td></td>
 															</tr>
@@ -88,7 +202,7 @@
 															<tr>
 																<td>{{ $request->created_at->format('M d, Y') }}</td>
 																<td>
-																	<a>{{ $request->id }}</a>
+																	<a>{{ $request->description }}</a>
 																</td>
 																<td>{{ $request->status }}</td>
 																<td class="text-right">
@@ -139,8 +253,7 @@
 																					</div>
 																					<div clas="d-flex">
 																						<div class="text-end pb-3">
-																							<span class="text-muted fs-7">ID REQUEST</span>
-																							<span class="text-gray-900 fw-bold fs-5">{{ $request->id }}</span>
+																							<span class="text-gray-900 fw-bold fs-5">{{ $request->description }}</span>
 																						</div>
 																					</div>
 																				</div>

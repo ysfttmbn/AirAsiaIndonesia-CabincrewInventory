@@ -13,6 +13,7 @@ class CreateRequestsTable extends Migration
             $table->uuid('product_id');
             $table->integer('quantity');
             $table->enum('status', ['Need Confirm', 'Processed', 'Completed', 'Rejected'])->default('Need Confirm');
+            $table->string('description');
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -30,11 +30,12 @@
 						<img class="theme-light-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="{{ asset('assets/media/logos/aalogo.png') }}" alt="" />
 						<img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="{{ asset('assets/media/logos/aalogo.png') }}" alt="" />
 						<h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">World’s Best Low-Cost Airline</h1>
-						<div class="text-gray-600 fs-base text-center fw-semibold">In this kind of post, 
-						<a href="#" class="opacity-75-hover text-primary me-1">the blogger</a>introduces a person they’ve interviewed 
-						<br />and provides some background information about 
-						<a href="#" class="opacity-75-hover text-primary me-1">the interviewee</a>and their 
-						<br />work following this is a transcript of the interview.</div>
+						<div class="text-gray-600 fs-base text-center fw-semibold">It all starts here. 
+						<a href="#" class="opacity-75-hover text-primary me-1">23 years ago,</a> a dream took flight - shaping and forever changing the travel industry in Asia 
+						<br />The idea was simple: Make flying affordable for everyone. 
+						<a href="#" class="opacity-75-hover text-primary me-1">We started an airline in 2001</a>Today 
+						<br />we’ve evolved to become something much bigger. We’re now a world-class brand, 
+						<br />a leading Asean airline, a digital travel and lifestyle platform; and we’re not stopping. </div>
 					</div>
 				</div>
 				<div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-12">

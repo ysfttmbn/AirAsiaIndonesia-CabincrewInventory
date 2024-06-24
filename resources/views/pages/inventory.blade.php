@@ -29,10 +29,17 @@
                             @foreach(Auth::user()->getRoleNames() as $role)
                                 @if($role == 'cabincrew')
                                 <a href="{{ route('requestproduct') }}" class="btn btn-primary">Request Item</a>
-                                @elseif($role == 'admin' || $role == 'management')
+                                @elseif($role == 'admin')
                                 <a href="{{ route('products.create') }}" class="btn btn-primary">Add Item</a>
                                 @endif
                             @endforeach
+                        </div>
+                    </div>
+                    <div class="card-header align-items-center py-5 gap-2 gap-md-5">
+                        <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
+                            <a href="{{ route('export.products.excel') }}" class="btn btn-secondary">Export to Excel</a>
+                            <a href="{{ route('export.products.pdf') }}" class="btn btn-secondary">Export to PDF</a>
+
                         </div>
                     </div>
                     <div class="card-body pt-0">
@@ -45,8 +52,8 @@
                                     <th class="text-end pe-3 min-w-100px">ID Item</th>
                                     <th class="text-end pe-3 min-w-100px">Category</th>
                                     <th class="text-end pe-3 min-w-100px">Size</th>
-                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
                                     <th class="text-end pe-3 min-w-100px">Qty</th>
+                                    @if(auth()->check() && (auth()->user()->hasRole('admin')))
                                     <th class="text-end pe-3 min-w-100px">Actions</th>
                                     @endif
                                 </tr>
@@ -71,7 +78,6 @@
                                     <td class="text-end">{{ $product->id}}</td>
                                     <td class="text-end">{{ $product->category }}</td>
                                     <td class="text-end">{{ $product->size }}</td>
-                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
                                     <td class="text-end pe-0">
                                         @if ($product->quantity == 0)
                                             <span class="badge badge-light-danger">Out of Stock</span>
@@ -82,6 +88,7 @@
                                         @endif
                                         <span class="fw-bold ms-3">{{ $product->quantity }}</span>
                                     </td>
+                                    @if(auth()->check() && (auth()->user()->hasRole('admin')))
                                     <td class="text-end">
                                         <form action="{{ route('products.destroy', ['product' => $product->id]) }}" method="POST">
                                         <a class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions 

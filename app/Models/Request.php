@@ -14,6 +14,7 @@ class Request extends Model
         'product_id',
         'quantity',
         'status',
+        'description',
     ];
 
     public function user()

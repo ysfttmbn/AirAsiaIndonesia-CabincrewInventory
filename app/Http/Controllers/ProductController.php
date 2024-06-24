@@ -9,6 +9,12 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Request as ProductRequest;
 use Illuminate\Http\Request as HttpRequest;
+use App\Exports\RequestsExport;
+use App\Exports\RequestsPdfExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductsExport;
+use App\Exports\ProductsPdfExport;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ProductController extends Controller
 {
@@ -130,6 +136,7 @@ class ProductController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
+            'description' => 'required|string',
         ]);
 
         $product = Product::findOrFail($request->product_id);
@@ -138,11 +145,34 @@ class ProductController extends Controller
         $newRequest->user_id = auth()->id();
         $newRequest->product_id = $product->id;
         $newRequest->quantity = $request->quantity;
+        $newRequest->description = $request->description;
         $newRequest->status = 'Need Confirm';
         $newRequest->save();
 
         return redirect()->back()->with('success', 'Request for inventory submitted successfully.');
     }
+
+    public function buyItem(HttpRequest $request)
+{
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'quantity' => 'required|integer|min:1',
+        'description' => 'required|string',
+    ]);
+
+    $product = Product::findOrFail($request->product_id);
+
+    $newRequest = new ProductRequest();
+    $newRequest->user_id = auth()->id();
+    $newRequest->product_id = $product->id;
+    $newRequest->quantity = $request->quantity;
+    $newRequest->description = $request->description;
+    $newRequest->status = 'Need Confirm'; // Atur status sesuai dengan kebutuhan pembelian
+    $newRequest->save();
+
+    return redirect()->back()->with('success', 'Buy for inventory submitted successfully.');
+}
+
 
     /**
      * Update the status of a request.
@@ -154,36 +184,66 @@ class ProductController extends Controller
     }
 
     public function updateRequestStatus(HttpRequest $request, $requestId, $status)
-    {
-        $requestModel = ProductRequest::findOrFail($requestId);
+{
+    $requestModel = ProductRequest::findOrFail($requestId);
 
-        if (!in_array($status, ['Processed', 'Completed', 'Rejected'])) {
-            return redirect()->back()->with('error', 'Invalid status update.');
-        }
-
-        if ($status == 'Completed') {
-            $product = Product::findOrFail($requestModel->product_id);
-            if ($product->quantity < $requestModel->quantity) {
-                return redirect()->back()->with('error', 'Not enough product quantity.');
-            }
-
-            $product->quantity -= $requestModel->quantity;
-            $product->save();
-        }
-
-        $requestModel->status = $status;
-        $requestModel->save();
-
-        // Hanya buat tautan WhatsApp untuk status "Processed" atau "Rejected"
-        if (in_array($status, ['Processed', 'Rejected'])) {
-            $user = $requestModel->user;
-            $message = "Your request for product {$requestModel->product_id} has been {$status}.";
-            $whatsappLink = $this->generateWhatsAppLink($user->phone_number, $message);
-            return redirect()->back()->with('success', 'Request status updated successfully.')->with('whatsappLink', $whatsappLink);
-        }
-
-        return redirect()->back()->with('success', 'Request status updated successfully.');
+    if (!in_array($status, ['Processed', 'Completed', 'Rejected'])) {
+        return redirect()->back()->with('error', 'Invalid status update.');
     }
 
+    if ($status == 'Completed') {
+        $product = Product::findOrFail($requestModel->product_id);
+        if ($product->quantity < $requestModel->quantity) {
+            return redirect()->back()->with('error', 'Not enough product quantity.');
+        }
 
+        $product->quantity -= $requestModel->quantity;
+        $product->save();
+    }
+
+    $requestModel->status = $status;
+    $requestModel->save();
+
+    $user = $requestModel->user;
+    $message = "Your request for product {$requestModel->product->product_name} has been {$status}.";    
+
+    // Logika untuk pesan berdasarkan description dan status
+    if ($status == 'Rejected') {
+        $message .= "\n\nPlease Contact Admin for Details.";
+    } elseif ($requestModel->description == 'Paid') {
+        $message .= "\n\nThe price you have to pay is : Rp.\nPlease pay to the following account number :";
+    }
+
+    // Buat tautan WhatsApp jika statusnya Processed atau Rejected
+    if (in_array($status, ['Processed', 'Rejected'])) {
+        $whatsappLink = $this->generateWhatsAppLink($user->phone_number, $message);
+        return redirect()->back()->with('success', 'Request status updated successfully.')->with('whatsappLink', $whatsappLink);
+    }
+
+    return redirect()->back()->with('success', 'Request status updated successfully.');
+}
+
+    public function exportExcel()
+    {
+        return Excel::download(new RequestsExport, 'requests.xlsx');
+    }
+
+    public function exportPdf()
+    {
+        $requestsPdfExport = new RequestsPdfExport();
+        return $requestsPdfExport->download();
+    }
+
+    // Export Excel
+public function exportProductsExcel()
+{
+    return Excel::download(new ProductsExport, 'products.xlsx');
+}
+
+// Export PDF
+public function exportProductsPdf()
+{
+    $productsPdfExport = new ProductsPdfExport();
+    return $productsPdfExport->download();
+}
 }

@@ -43,7 +43,7 @@ class GoogleController extends Controller
             case 'sialica012@gmail.com':
                 $user->assignRole('admin');
                 break;
-            case 'tio@gmail.com':
+            case 'tiomanalu1803@gmail.com':
                 $user->assignRole('management');
                 break;
             default:

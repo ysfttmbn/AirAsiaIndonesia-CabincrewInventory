@@ -80,13 +80,14 @@
                                                     @if($role == 'cabincrew')
                                                         <div class="position-relative">
                                                             @if(Auth::user()->phone_number)
+                                                            <a class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding1">Buy Item</a>
                                                                 <a class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_bidding">Request Item</a>
                                                             @else
                                                                 <button class="btn btn-primary er fs-6 px-8 py-4" disabled>Request Item</button>
                                                                 <div class="text-danger fs-8 mt-2">Please Complete your profile</div>
                                                             @endif
                                                         </div>
-                                                    @elseif($role == 'admin' || $role == 'management')
+                                                    @elseif($role == 'admin')
                                                         <a href="{{ route('products.create') }}" class="btn btn-primary er fs-6 px-8 py-4">Add Item</a>
                                                     @endif
                                                 @endforeach
@@ -172,6 +173,12 @@
                                             <option value="Rejected">Rejected</option>
                                         </select>
                                     </div>
+                                    @if(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('management')))
+                                    <div>
+                                        <a href="{{ route('requests.exportExcel') }}" class="btn btn-primary">Export to Excel</a>
+                                        <a href="{{ route('requests.exportPdf') }}" class="btn btn-secondary">Export to PDF</a>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -253,7 +260,7 @@
                                                                     <button type="submit" class="menu-link px-3">Accepted</button>
                                                                 </form>
                                                             </div>
-                                                        @elseif(($role == 'admin' || $role == 'management') && $request->status == 'Need Confirm')
+                                                        @elseif(($role == 'admin') && $request->status == 'Need Confirm')
                                                             <div class="menu-item px-3">
                                                                 <form action="{{ route('requests.updateStatus', ['requestId' => $request->id, 'status' => 'Processed']) }}" method="POST">
                                                                     @csrf
@@ -316,8 +323,7 @@
                                                                     </div>
                                                                     <div clas="d-flex">
                                                                         <div class="text-end pb-3">
-                                                                            <span class="text-muted fs-7">ID REQUEST</span>
-                                                                            <span class="text-gray-900 fw-bold fs-5">{{ $request->id }}</span>
+                                                                            <span class="text-gray-900 fw-bold fs-5">{{ $request->description }}</span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -398,6 +404,17 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="fv-row mb-8">
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Description</span>
+                                    </label>
+                                    <div class="">
+                                        <input type="text" name="description" class="form-control form-control-solid form-control-lg" value="Unpaid" readonly>
+                                    </div>
+                                </div>
+                                
+                                
+                                
                                 <div class="d-flex flex-column mb-8 fv-row">
                                     <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
                                         <span class="required">Quantity</span>
@@ -412,6 +429,65 @@
                                     </button>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="kt_modal_bidding1" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered mw-650px">
+                    <div class="modal-content rounded">
+                        <div class="modal-header pb-0 border-0 justify-content-end">
+                            <div class="btn btn-sm btn-icon btn-active-color-primary" data-kt-modal-action-type="close">
+                                <a href="{{ route('dashboard') }}" class="ki-outline ki-cross fs-1"></a>
+                            </div>
+                        </div>
+                        <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                            <form id="kt_modal_bidding1_form" class="form" action="{{ route('products.buyItem') }}" method="POST">
+                                @csrf
+                                <div class="mb-13 text-center">
+                                    <h1 class="mb-3">Place your Purchase</h1>
+                                    <div class="text-muted fw-semibold fs-5">If you need more info, please contact
+                                        <a class="fw-bold link-primary">Administrator</a>.
+                                    </div>
+                                </div>
+                                <div class="fv-row mb-8">
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Requested items</span>
+                                    </label>
+                                    <div class="" data-kt-modal-bidding-type="dollar">
+                                        <select name="product_id" aria-label="Select a Currency" data-placeholder="Select a currency.." class="form-select form-select-solid form-select-lg">
+                                            @foreach($products as $product)
+                                            <option value="{{ $product->id }}">
+                                                <b>{{ $product->id }}</b> - {{ $product->product_name }} - Size {{ $product->size }}
+                                            </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="fv-row mb-8">
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Description</span>
+                                    </label>
+                                    <div>
+                                        <input type="text" name="description" class="form-control form-control-solid form-control-lg" value="Paid" readonly>
+                                    </div>
+                                </div>
+                                <div class="fv-row mb-8">
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Quantity</span>
+                                    </label>
+                                    <div>
+                                        <input type="number" name="quantity" class="form-control form-control-solid form-control-lg" value="1" max="2" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-light me-3" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="indicator-label">Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                                                      
                         </div>
                     </div>
                 </div>
